@@ -39,11 +39,11 @@ class PongGame (Widget):
     ball = ObjectProperty (None)
     player1 = ObjectProperty (None)
     player2 = ObjectProperty (None)
-    
+
     def __init__ (self):
         super (PongGame, self) . __init__ ()
 
-        
+
     def serve_ball (self):
         self.ball.center = self.center
         vel = (- Window.width / 140, 0)
@@ -51,15 +51,15 @@ class PongGame (Widget):
 
     def update (self, dt):
         if self.ball.velocity == [0,0] and self.player2.score < 5:
-	    self.serve_ball ()
+            self.serve_ball ()
         if self.player2.score >= 5:
             self.player1.center_y = self.player1.center_y
             self.player2.center_y = self.player2.center_y
-        elif self.player1.center_y - 2 < self.y:
+        elif self.player1.center_y - Window.height / 300 < self.y:
             self.player1.center_y = self.y
             self.player2.center_y = self.ball.center_y
         else:
-            self.player1.center_y = self.player1.center_y - 2
+            self.player1.center_y = self.player1.center_y - Window.height / 300
             self.player2.center_y = self.ball.center_y
 
         self.player1.bounce_ball (self.ball, self.player1)
@@ -93,7 +93,7 @@ class PongGame (Widget):
 class LazyPongApp (App):
 
     use_kivy_settings = False
-    
+
     def build (self):
         game = PongGame ()
         Clock.schedule_interval(game.update, 1.0/60.0)

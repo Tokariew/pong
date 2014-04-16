@@ -1,12 +1,13 @@
 #:kivy 1.8.0
 #:import Win kivy.core.window.Window
+#:import Rand random.randint
 
 
 <PongPaddle>:
     size: Win.width / 80, Win.width / 8
     canvas:
         Color:
-            rgb: 1,1,1
+            rgb: Rand (0, 255)/255, Rand (0, 255)/255, Rand (0, 255)/255
         Rectangle:
             source: 'data/pong.png'
             pos:self.pos
@@ -53,12 +54,12 @@
         id: player_right
         x: root.width - self.width
         center_y: root.center_y
-        
+
 <PongBall>:
     size: Win.height / 16, Win.height /16
     canvas:
         Color:
-            rgb: 1,1,.75
+            rgb: Rand (0, 255)/255, Rand (0, 255)/255, Rand (0, 255)/255
         Ellipse:
             source: 'data/ball2.png'
             pos: self.pos
