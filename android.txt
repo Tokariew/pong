@@ -1,0 +1,3 @@
+title=pong alpha
+author=tokariew
+orientation=landscape
