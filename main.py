@@ -45,7 +45,7 @@ class PongGame (Widget):
         
     def serve_ball (self):
         self.ball.center = self.center
-        vel = (- self.height / 80, 0)
+        vel = (- self.width / 140, 0)
         self.ball.velocity = vel
 
     def update (self, dt):
