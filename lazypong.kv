@@ -1,27 +1,19 @@
 #:kivy 1.8.0
+#:import Win kivy.core.window.Window
 
-<PongBall>:
-    size: 40, 40
-    canvas:
-        Color:
-            rgb: 1,1,.75
-        Ellipse:
-            source: 'ball2.png'
-            pos: self.pos
-            size: self.size
 
 <PongPaddle>:
-    size: 10, 100
+    size: Win.width / 80, Win.width / 8
     canvas:
         Color:
             rgb: 1,1,1
         Rectangle:
-            source: 'pong.png'
+            source: 'data/pong.png'
             pos:self.pos
             size:self.size
 
 <PongGame>:
-
+    id: ping
     ball: pong_ball
     player1: player_left
     player2: player_right
@@ -30,7 +22,7 @@
         Color:
             rgb: 1, 1, 1
         Rectangle:
-            source: 'back.png'
+            source: 'data/back.png'
             size: self.size
         Rectangle:
             pos: self.center_x -5, 0
@@ -61,3 +53,13 @@
         id: player_right
         x: root.width - self.width
         center_y: root.center_y
+        
+<PongBall>:
+    size: Win.height / 16, Win.height /16
+    canvas:
+        Color:
+            rgb: 1,1,.75
+        Ellipse:
+            source: 'data/ball2.png'
+            pos: self.pos
+            size: self.size

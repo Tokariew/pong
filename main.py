@@ -8,6 +8,7 @@ from kivy.vector import Vector
 from kivy.clock import Clock
 from random import randint
 from time import sleep
+from kivy.core.window import Window
 
 
 
@@ -45,7 +46,7 @@ class PongGame (Widget):
         
     def serve_ball (self):
         self.ball.center = self.center
-        vel = (- self.width / 140, 0)
+        vel = (- Window.width / 140, 0)
         self.ball.velocity = vel
 
     def update (self, dt):
@@ -81,8 +82,8 @@ class PongGame (Widget):
 
     def on_touch_move (self, touch):
         if touch.x < self.width:
-            if self.player1.center_y + 50 < self.top and self.player2.score <=5:
-                self.player1.center_y = self.player1.center_y + 50
+            if self.player1.center_y + Window.height / 16 < self.top and self.player2.score <=5:
+                self.player1.center_y = self.player1.center_y + Window.height / 16
             elif self.player2.score >= 5:
                 self.player1.center_y = self.player1.center_y
             else:
