@@ -5,4 +5,4 @@ and in some aspect is a base on Flappy Birds
 
 Game use only Kivy and some python function, you can run it on PC :)
 
-![Screenshot](/screenshot.png)
+![Screenshot](/screen.png)
