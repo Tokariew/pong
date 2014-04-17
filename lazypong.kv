@@ -7,7 +7,7 @@
     size: Win.width / 80, Win.width / 8
     canvas:
         Color:
-            rgba: Rand (230, 255)/255, Rand (127, 153)/255, Rand (30, 127)/255, 1
+            rgba: Rand (230, 255)/255.0, Rand (127, 153)/255.0, Rand (30, 127)/255.0, 1
         Rectangle:
             source: 'data/pong.png'
             pos:self.pos
@@ -21,7 +21,7 @@
 
     canvas:
         Color:
-            rgba: 0, Rand (200, 255)/255, Rand (220, 255)/255, 1
+            rgba: 0, Rand (200, 255)/255.0, Rand (220, 255)/255.0, 1
         Rectangle:
             source: 'data/back.jpg'
             size: self.size
@@ -59,7 +59,7 @@
     size: Win.height / 16, Win.height /16
     canvas:
         Color:
-            rgb: Rand (200, 255)/255,  0, 0
+            rgb: Rand (200, 255)/255.0,  0, 0
         Ellipse:
             source: 'data/ball2.png'
             pos: self.pos

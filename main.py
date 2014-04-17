@@ -46,7 +46,7 @@ class PongGame (Widget):
 
     def serve_ball (self):
         self.ball.center = self.center
-        vel = (- Window.width / 140, 0)
+        vel = (- Window.width / 140.0, 0)
         self.ball.velocity = vel
 
     def update (self, dt):
@@ -55,11 +55,11 @@ class PongGame (Widget):
         if self.player2.score >= 5:
             self.player1.center_y = self.player1.center_y
             self.player2.center_y = self.player2.center_y
-        elif self.player1.center_y - Window.height / 300 < self.y:
+        elif self.player1.center_y - Window.height / 300.0 < self.y:
             self.player1.center_y = self.y
             self.player2.center_y = self.ball.center_y
         else:
-            self.player1.center_y = self.player1.center_y - Window.height / 300
+            self.player1.center_y = self.player1.center_y - Window.height / 300.0
             self.player2.center_y = self.ball.center_y
 
         self.player1.bounce_ball (self.ball, self.player1)
