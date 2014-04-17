@@ -7,7 +7,7 @@
     size: Win.width / 80, Win.width / 8
     canvas:
         Color:
-            rgb: Rand (0, 255)/255, Rand (0, 255)/255, Rand (0, 255)/255
+            rgba: Rand (230, 255)/255, Rand (127, 153)/255, Rand (30, 127)/255, 1
         Rectangle:
             source: 'data/pong.png'
             pos:self.pos
@@ -21,13 +21,13 @@
 
     canvas:
         Color:
-            rgb: 1, 1, 1
+            rgba: 0, Rand (200, 255)/255, Rand (220, 255)/255, 1
         Rectangle:
-            source: 'data/back.png'
+            source: 'data/back.jpg'
             size: self.size
         Rectangle:
             pos: self.center_x -5, 0
-            size: 10, self.height
+            size: Win.width / 80, self.height
 
     Label:
         font_size: 70
@@ -47,19 +47,19 @@
 
     PongPaddle:
         id: player_left
-        x: root.x
+        x: root.x + Win.width / 40
         center_y: root.center_y
 
     PongPaddle:
         id: player_right
-        x: root.width - self.width
+        x: root.width - self.width - Win.width / 40
         center_y: root.center_y
 
 <PongBall>:
     size: Win.height / 16, Win.height /16
     canvas:
         Color:
-            rgb: Rand (0, 255)/255, Rand (0, 255)/255, Rand (0, 255)/255
+            rgb: Rand (200, 255)/255,  0, 0
         Ellipse:
             source: 'data/ball2.png'
             pos: self.pos
