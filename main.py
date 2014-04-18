@@ -1,4 +1,4 @@
-__version__ = '0.2.4'
+__version__ = '0.2.5'
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -9,8 +9,9 @@ from kivy.clock import Clock
 from random import randint
 from time import sleep
 from kivy.core.window import Window
+from kivy.animation import Animation
 
-
+text = Label (text = 'Game over', font_size='50sp', color=(0.686, 0.067, 0.106, 1), center = Window.center)
 
 class PongPaddle (Widget):
     score = NumericProperty (0)
@@ -40,8 +41,9 @@ class PongGame (Widget):
     player1 = ObjectProperty (None)
     player2 = ObjectProperty (None)
 
-    def __init__ (self):
+    def __init__ (self, **kwargs):
         super (PongGame, self) . __init__ ()
+        self.restart
 
 
     def serve_ball (self):
@@ -73,8 +75,10 @@ class PongGame (Widget):
             if self.player2.score < 5:
                 self.serve_ball ()
             elif self.player2.score >= 5:
+                self.serve_ball()
                 self.ball.velocity = (0,0)
-                self.add_widget (Label (text = 'Game over', font_size='50sp', color=(0.686, 0.067, 0.106, 1), center = self.center))
+                self.end ()
+                
 
         if self.ball.x > self.width:
             self.serve_ball ()
@@ -88,6 +92,19 @@ class PongGame (Widget):
                 self.player1.center_y = self.player1.center_y
             else:
                 self.player1.center_y = self.top
+    
+    def end (self):
+        end = self.ids.end.__self__
+        self.remove_widget (end)
+        self.add_widget (end)
+        Animation (opacity = 1., d=.5).start(end)
+    
+    def restart (self):
+        self.player2.score = 0
+        self.player1.score = 0
+        Clock.schedule_once (self.update, 1)
+        self.ids.end.opacity = 0
+        
 
 
 class LazyPongApp (App):

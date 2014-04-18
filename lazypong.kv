@@ -33,13 +33,13 @@
         font_size: 70
         center_x: root.width / 4
         top: root.top -50
-        text: 'score:'
+        text: 'score: ' + str(root.player1.score)
 
     Label:
         font_size: 70
         center_x: root.width * 3 / 4
         top: root.top -50
-        text: str(root.player1.score)
+        text: 'lives: ' + str(5 - root.player2.score)
 
     PongBall:
         id: pong_ball
@@ -54,6 +54,29 @@
         id: player_right
         x: root.width - self.width - Win.width / 40
         center_y: root.center_y
+        
+    AnchorLayout:
+        id: end
+        pos: root.pos
+        size: root.size
+        opacity: 0
+        
+        BoxLayout:
+            orientation: 'vertical'
+            padding: '20dp'
+            spacing: '30dp'
+            
+            Label:
+                id: end_label
+                font_size: min (self.height, self.width) / 5.0
+                color: 0.686, 0.067, 0.106, 1
+                bold: True
+                text: 'Game\nover!'
+                
+            Button:
+                text: 'Restart'
+                on_press: root.restart () if end.opacity == 1. else None
+                font_size: '30dp'
 
 <PongBall>:
     size: Win.height / 16, Win.height /16
