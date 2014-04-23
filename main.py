@@ -46,23 +46,31 @@ class PongGame (Widget):
         self.restart
 
 
-    def serve_ball (self):
+    def serve_ball (self, vel = (-Window.width / 140.0, 0)):
         self.ball.center = self.center
-        vel = (- Window.width / 140.0, 0)
         self.ball.velocity = vel
+
+    def move_player2 (self):
+        if self.player2.score >= 5:
+            self.player2.center_y = self.player2.center_y
+        elif self.player2.center_y - Window.height / 300.0 < self.y:
+            self.player2.center_y = self.y
+        else:
+            self.player2.center_y = self.player2.center_y - Window.height / 300.0
+
+        if self.player2.center_y < self.ball.center_y - Window.height / 8.0:
+            self.player2.center_y += Window.height * 15 / 128.0
+
 
     def update (self, dt):
         if self.ball.velocity == [0,0] and self.player2.score < 5:
             self.serve_ball ()
         if self.player2.score >= 5:
             self.player1.center_y = self.player1.center_y
-            self.player2.center_y = self.player2.center_y
         elif self.player1.center_y - Window.height / 300.0 < self.y:
             self.player1.center_y = self.y
-            self.player2.center_y = self.ball.center_y
         else:
             self.player1.center_y = self.player1.center_y - Window.height / 300.0
-            self.player2.center_y = self.ball.center_y
 
         self.player1.bounce_ball (self.ball, self.player1)
         self.player2.bounce_ball (self.ball, None)
@@ -75,14 +83,14 @@ class PongGame (Widget):
             if self.player2.score < 5:
                 self.serve_ball ()
             elif self.player2.score >= 5:
-                self.serve_ball()
-                self.ball.velocity = (0,0)
+                self.serve_ball ((0,0))
                 self.end ()
-                
+
 
         if self.ball.x > self.width:
             self.serve_ball ()
         self.ball.move ()
+        self.move_player2 ()
 
     def on_touch_move (self, touch):
         if touch.x < self.width:
@@ -92,19 +100,21 @@ class PongGame (Widget):
                 self.player1.center_y = self.player1.center_y
             else:
                 self.player1.center_y = self.top
-    
+
     def end (self):
         end = self.ids.end.__self__
         self.remove_widget (end)
         self.add_widget (end)
         Animation (opacity = 1., d=.5).start(end)
-    
+
     def restart (self):
         self.player2.score = 0
         self.player1.score = 0
-        Clock.schedule_once (self.update, 1)
+        Clock.schedule_once (self.update, 1/60.0)
         self.ids.end.opacity = 0
-        
+        self.player1.center_y = self.center_y
+        self.player2.center_y = self.center_y
+
 
 
 class LazyPongApp (App):
