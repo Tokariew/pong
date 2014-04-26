@@ -70,6 +70,18 @@ class PongGame (Widget):
             self.player2.center_y += Window.height * 15 / 128.0
 
 
+    def move_player2 (self):
+        if self.player2.score >= 5:
+            self.player2.center_y = self.player2.center_y
+        elif self.player2.center_y - Window.height / 300.0 < self.y:
+            self.player2.center_y = self.y
+        else:
+            self.player2.center_y = self.player2.center_y - Window.height / 300.0
+
+        if self.player2.center_y < self.ball.center_y - Window.height / 8.0:
+            self.player2.center_y += Window.height * 15 / 128.0
+
+
     def update (self, dt):
         if self.ball.velocity == [0,0] and self.player2.score < 5:
             self.serve_ball ()
@@ -101,6 +113,7 @@ class PongGame (Widget):
             self.serve_ball ()
         self.move_player2 ()
         self.ball.move ()
+        self.move_player2 ()
 
     def on_touch_move (self, touch):
         if touch.x < self.width:
