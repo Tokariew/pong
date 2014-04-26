@@ -1,4 +1,4 @@
-__version__ = '0.2.5'
+__version__ = '0.2.6'
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -15,13 +15,19 @@ text = Label (text = 'Game over', font_size='50sp', color=(0.686, 0.067, 0.106, 
 
 class PongPaddle (Widget):
     score = NumericProperty (0)
+    bounce = NumericProperty (0)
 
     def bounce_ball (self, ball, player):
-        if self.collide_widget (ball):
+        if self.collide_widget (ball) and self.bounce < 0:
+            self.bounce = 12
             vx, vy = ball.velocity
             offset = (ball.center_y - self.center_y) / (self.height / 2)
             bounced = Vector (-1 * vx, vy)
             vel = bounced * 1.05
+            if vel.x > Window.width * 0.04:
+                vel.x = 0.04 * Window.width
+            elif vel.x < - Window.width * 0.04:
+                vel.x = - 0.04 * Window.width
             ball.velocity = vel.x, vel.y +offset
             try:
                 player.score += 1
@@ -46,26 +52,38 @@ class PongGame (Widget):
         self.restart
 
 
-    def serve_ball (self):
+    def serve_ball (self, vel = (-Window.width / 140.0, 0)):
         self.ball.center = self.center
-        vel = (- Window.width / 140.0, 0)
         self.ball.velocity = vel
+        self.player1.center_y = self.center_y
+        self.player2.center_y = self.center_y
+
+    def move_player2 (self):
+        if self.player2.score >= 5:
+            self.player2.center_y = self.player2.center_y
+        elif self.player2.center_y - Window.height / 300.0 < self.y:
+            self.player2.center_y = self.y
+        else:
+            self.player2.center_y = self.player2.center_y - Window.height / 300.0
+
+        if self.player2.center_y < self.ball.center_y - Window.height / 8.0:
+            self.player2.center_y += Window.height * 15 / 128.0
+
 
     def update (self, dt):
         if self.ball.velocity == [0,0] and self.player2.score < 5:
             self.serve_ball ()
         if self.player2.score >= 5:
             self.player1.center_y = self.player1.center_y
-            self.player2.center_y = self.player2.center_y
         elif self.player1.center_y - Window.height / 300.0 < self.y:
             self.player1.center_y = self.y
-            self.player2.center_y = self.ball.center_y
         else:
             self.player1.center_y = self.player1.center_y - Window.height / 300.0
-            self.player2.center_y = self.ball.center_y
 
         self.player1.bounce_ball (self.ball, self.player1)
         self.player2.bounce_ball (self.ball, None)
+        self.player1.bounce -= 1
+        self.player2.bounce -= 1
 
         if (self.ball.y < self.y) or (self.ball.top > self.top):
             self.ball.velocity_y *= -1
@@ -75,13 +93,13 @@ class PongGame (Widget):
             if self.player2.score < 5:
                 self.serve_ball ()
             elif self.player2.score >= 5:
-                self.serve_ball()
-                self.ball.velocity = (0,0)
+                self.serve_ball ((0,0))
                 self.end ()
-                
+
 
         if self.ball.x > self.width:
             self.serve_ball ()
+        self.move_player2 ()
         self.ball.move ()
 
     def on_touch_move (self, touch):
@@ -92,19 +110,21 @@ class PongGame (Widget):
                 self.player1.center_y = self.player1.center_y
             else:
                 self.player1.center_y = self.top
-    
+
     def end (self):
         end = self.ids.end.__self__
         self.remove_widget (end)
         self.add_widget (end)
         Animation (opacity = 1., d=.5).start(end)
-    
+
     def restart (self):
         self.player2.score = 0
         self.player1.score = 0
-        Clock.schedule_once (self.update, 1)
+        Clock.schedule_once (self.update, 1/60.0)
         self.ids.end.opacity = 0
-        
+        self.player1.center_y = self.center_y
+        self.player2.center_y = self.center_y
+
 
 
 class LazyPongApp (App):
