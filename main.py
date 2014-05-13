@@ -30,7 +30,6 @@ class PongPaddle (Widget):
             bounced = Vector (-1 * vx, vy)
             vel = bounced * 1.05
             ball.velocity = vel.x * cos (offset) - vel.y * sin (offset), vel.x * sin (offset) + vel.y * cos (offset)
-            print (ball.velocity, factor)
             try:
                 player.score += 1
             except AttributeError:
