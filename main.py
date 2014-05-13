@@ -10,6 +10,7 @@ from random import randint
 from time import sleep
 from kivy.core.window import Window
 from kivy.animation import Animation
+from math import sin, cos, pi
 
 text = Label (text = 'Game over', font_size='50sp', color=(0.686, 0.067, 0.106, 1), center = Window.center)
 
@@ -20,15 +21,16 @@ class PongPaddle (Widget):
     def bounce_ball (self, ball, player):
         if self.collide_widget (ball) and self.bounce < 0:
             self.bounce = 12
+            if self.x < Window.width / 2.0:
+	        factor  =  1
+	    else:
+	        factor = -1
             vx, vy = ball.velocity
-            offset = (ball.center_y - self.center_y) / (self.height / 2)
+            offset = (ball.center_y - self.center_y) / (self.height / 2) * 30 * pi /180.0 * factor
             bounced = Vector (-1 * vx, vy)
             vel = bounced * 1.05
-            if vel.x > Window.width * 0.04:
-                vel.x = 0.04 * Window.width
-            elif vel.x < - Window.width * 0.04:
-                vel.x = - 0.04 * Window.width
-            ball.velocity = vel.x, vel.y +offset
+            ball.velocity = vel.x * cos (offset) - vel.y * sin (offset), vel.x * sin (offset) + vel.y * cos (offset)
+            print (ball.velocity, factor)
             try:
                 player.score += 1
             except AttributeError:
