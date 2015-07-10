@@ -43,7 +43,7 @@ requirements = kivy
 #garden_requirements =
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/data/backpng
+presplash.filename = %(source.dir)s/data/back.jpg
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/data/ball2.png
@@ -64,13 +64,13 @@ android.permissions = WAKE_LOCK
 
 
 # (int) Android API to use
-android.api = 21
+#android.api = 21
 
 # (int) Minimum API required (8 = Android 2.2 devices)
 #android.minapi = 8
 
 # (int) Android SDK version to use
-android.sdk = 24
+#android.sdk = 24
 
 # (str) Android NDK version to use
 #android.ndk = 9c
@@ -149,7 +149,7 @@ android.wakelock = True
 [buildozer]
 
 # (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-log_level = 1
+log_level = 2
 
 # (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1
