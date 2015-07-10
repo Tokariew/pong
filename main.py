@@ -1,4 +1,4 @@
-__version__ = '0.2.7'
+__version__ = '0.2.8'
 
 from kivy.app import App
 from kivy.uix.widget import Widget
@@ -62,13 +62,14 @@ class PongGame (Widget):
     def move_player2 (self):
         if self.player2.score >= 5:
             self.player2.center_y = self.player2.center_y
-        elif self.player2.center_y - Window.height / 300.0 < self.y:
-            self.player2.center_y = self.y
+        elif self.player2.y - Window.height / 300.0 < self.y:
+            self.player2.y = self.y
         else:
             self.player2.center_y = self.player2.center_y - Window.height / 300.0
 
         if self.player2.center_y < self.ball.center_y - Window.height / 8.0:
-            self.player2.center_y += Window.height * 15 / 128.0
+	    if self.player2.top + Window.height * 15 / 128.0 < self.top: 
+                self.player2.center_y += Window.height * 15 / 128.0
 
 
     def update (self, dt):
@@ -76,8 +77,8 @@ class PongGame (Widget):
             self.serve_ball ()
         if self.player2.score >= 5:
             self.player1.center_y = self.player1.center_y
-        elif self.player1.center_y - Window.height / 300.0 < self.y:
-            self.player1.center_y = self.y
+        elif self.player1.y - Window.height / 300.0 < self.y:
+            self.player1.y = self.y
         else:
             self.player1.center_y = self.player1.center_y - Window.height / 300.0
 
@@ -105,12 +106,12 @@ class PongGame (Widget):
 
     def on_touch_move (self, touch):
         if touch.x < self.width:
-            if self.player1.center_y + Window.height / 16 < self.top and self.player2.score <=5:
+            if self.player1.center_y + Window.height / 8 < self.top and self.player2.score <=5:
                 self.player1.center_y = self.player1.center_y + Window.height / 16
             elif self.player2.score >= 5:
                 self.player1.center_y = self.player1.center_y
             else:
-                self.player1.center_y = self.top
+                self.player1.top = self.top
 
     def end (self):
         end = self.ids.end.__self__
