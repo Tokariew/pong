@@ -1,18 +1,20 @@
 __version__ = '0.2.8'
 
+from math import cos, pi, sin
+
+from kivy.animation import Animation
 from kivy.app import App
-from kivy.uix.widget import Widget
-from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
-from kivy.vector import Vector
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.animation import Animation
-from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import (NumericProperty, ObjectProperty,
+                             ReferenceListProperty)
 from kivy.uix.button import Button
-from math import sin, cos, pi
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.widget import Widget
+from kivy.vector import Vector
 
 
-class PongPaddle (Widget):
+class PongPaddle(Widget):
     score = NumericProperty(0)
     bounce = NumericProperty(0)
 
@@ -24,17 +26,19 @@ class PongPaddle (Widget):
             else:
                 factor = -1
             vx, vy = ball.velocity
-            offset = (ball.center_y - self.center_y) / (self.height / 2) * 30 * pi / 180.0 * factor
+            offset = (ball.center_y - self.center_y) / (
+                self.height / 2) * 30 * pi / 180.0 * factor
             bounced = Vector(-1 * vx, vy)
             vel = bounced * 1.05
-            ball.velocity = vel.x * cos(offset) - vel.y * sin(offset), vel.x * sin(offset) + vel.y * cos(offset)
+            ball.velocity = vel.x * cos(offset) - vel.y * sin(
+                offset), vel.x * sin(offset) + vel.y * cos(offset)
             try:
                 player.score += 1
             except AttributeError:
                 pass
 
 
-class PongBall (Widget):
+class PongBall(Widget):
     velocity_x = NumericProperty(0)
     velocity_y = NumericProperty(0)
     velocity = ReferenceListProperty(velocity_x, velocity_y)
@@ -43,7 +47,7 @@ class PongBall (Widget):
         self.pos = Vector(*self.velocity) + self.pos
 
 
-class PongGame (Widget):
+class PongGame(Widget):
     ball = ObjectProperty(None)
     player1 = ObjectProperty(None)
     player2 = ObjectProperty(None)
@@ -119,7 +123,7 @@ class PongGame (Widget):
     def restart(self):
         self.player2.score = 0
         self.player1.score = 0
-        Clock.schedule_once(self.update, 1/60.0)
+        Clock.schedule_once(self.update, 1 / 60.0)
         self.ids.end.opacity = 0
         self.player1.center_y = self.center_y
         self.player2.center_y = self.center_y
@@ -132,25 +136,36 @@ class PongMenu(FloatLayout):
         self.orientation = 'vertical'
         self.spacing = 10
         self.padding = [10, 10, 10, 10]
-        btn1 = Button(text='Play', size_hint=(.3, .2), pos_hint={'right': .9, 'top': .8})
+        btn1 = Button(text='Play',
+                      size_hint=(.3, .2),
+                      pos_hint={
+                          'right': .9,
+                          'top': .8
+                      })
         btn1.bind(on_press=self.play_pong)
-        btn2 = Button(text='Settings', size_hint=(.3, .2), pos_hint={'right': .9, 'top': .4})
+        btn2 = Button(text='Settings',
+                      size_hint=(.3, .2),
+                      pos_hint={
+                          'right': .9,
+                          'top': .4
+                      })
         self.add_widget(btn1)
         self.add_widget(btn2)
 
     def play_pong(self, *l):
         if not hasattr(self, 'play'):
             self.play = play = PongGame()
-            Clock.schedule_interval(play.update, 1.0/60.0)
+            Clock.schedule_interval(play.update, 1.0 / 60.0)
             self.add_widget(play)
 
 
-class LazyPongApp (App):
+class LazyPongApp(App):
 
     use_kivy_settings = False
 
     def build(self):
         return PongMenu()
+
 
 if __name__ == '__main__':
     LazyPongApp().run()
